@@ -10,7 +10,7 @@
 
 <body>
 <header>
-    <h1>Administrator Dashboard app11</h1>
+    <h1>Administrator Dashboard app12</h1>
     <button id="logoutBtn">Logout</button>
 <button onclick="window.location.href='admin-ergebnisse.html'">
     Ergebnisse bearbeiten
@@ -89,24 +89,25 @@
     </div>
 </section>
 
-<section id="spalte4"      
+<section id="spalte4">      
+
 <h2>Benutzerverwaltung</h2>
 <form id="userForm">
-    <input type="text" id="userName" placeholder="Name" required>
-    <input type="password" id="userPassword" placeholder="Passwort" required>
-
-    <select id="userRole">
+    <input type="text" id="userName" class="zeile1" placeholder="Name" required>
+    <input type="password" id="userPassword" class="zeile1" placeholder="Passwort" required>
+    <div class="zeile1">
+    <select id="userRole" >
         <option value="tipper">Tipper</option>
         <option value="admin">Admin</option>
     </select>
 
     <button type="submit">Benutzer anlegen</button>
-    
+    </div>
     
 </form>
 
 
-<table border="1">
+<table border="0">
     <thead>
         <tr>
             <th>Name</th>
