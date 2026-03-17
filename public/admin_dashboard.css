@@ -19,7 +19,7 @@ main {
   grid-area: main;
   display: grid;
   /* grid-template-columns:minmax(100px, 1fr) 2.0fr 1.0fr 1.0fr ; */
-  grid-template-columns: 25% 50% 15% 10% ;
+  grid-template-columns: 25% 45% 20% 10% ;
    gap: 0.2rem;
 
   
@@ -36,6 +36,18 @@ button {
   height: 40px;
   width:fit-content;
   margin-bottom: 10px;
+}
+h2{
+  color: rgb(20, 37, 53);
+  font-size: 1.5rem;
+}
+
+td {
+  background: white;
+  border-style: solid;
+  border-color: red;
+  text-align: center;
+  padding: 0.2rem;
 }
 
 
@@ -174,7 +186,14 @@ button {
   height: 35px;
 }
 
-
+#userName,#userPassword,#userRole {
+  background: white;
+  border-style: solid;
+  border-color: rgb(127, 141, 221);
+  width: 60%;
+  height: 25px;
+  margin-bottom: 10px;
+}
 
 
 

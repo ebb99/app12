@@ -530,7 +530,7 @@ app.post("/api/tips", requireLogin, requireTipper, async (req, res) => {
     const { spiel_id, heimtipp, gasttipp } = req.body;
 
 // console.log("Tipp-Request:", req.body); // ← WICHTIG
-console.log(`💡 Tipp-Check: User ${req.session.user.id} tippt ${heimtipp}:${gasttipp} auf Spiel ${spiel_id}`);
+// console.log(`💡 Tipp-Check: User ${req.session.user.id} tippt ${heimtipp}:${gasttipp} auf Spiel ${spiel_id}`);
     try {
         // Spiel laden
         const spielRes = await pool.query(
