@@ -630,6 +630,7 @@ app.get("/api/rangliste", requireLogin, async (req, res) => {
     COUNT(t.id) AS tipps_anzahl
     FROM users u
     LEFT JOIN tips t ON t.user_id = u.id
+    WHERE u.role = 'tipper'
     GROUP BY u.id, u.name
     ORDER BY punkte DESC, u.name
     `);
