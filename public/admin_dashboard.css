@@ -44,10 +44,12 @@ h2{
 
 td {
   background: white;
-  border-style: solid;
-  border-color: red;
-  text-align: center;
+  /* display: flex; */
+  justify-content: center; /* horizontal */
+  /* align-items: center;     vertikal */
+  /* text-align: center; */
   padding: 0.2rem;
+  margin-right: 20px;
 }
 
 
