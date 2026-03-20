@@ -40,6 +40,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     if (session.user.role === "admin") {
         window.location.href = "/admin_dashboard.html";
     } else {
-        window.location.href = "/tipper_dashboard.html";
+        window.location.href = "/tipper_spiele.html";
     }
 });
