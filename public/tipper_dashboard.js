@@ -115,121 +115,239 @@ function TestMeldunglöschen() {
     el.innerHTML = "";
 }
 
-async function ladeSpieleMitTipps() {
-    const spiele = await api("/api/spiele");
-    const tbody = $("tipTabelle");
-    tbody.innerHTML = "";
-    //zeigeTestMeldung(`${spiele} alle Spiele `, "blue");
+// async function ladeSpieleMitTipps() {
+//     const spiele = await api("/api/spiele");
+//     const tbody = $("tipTabelle");
+//     tbody.innerHTML = "";
+//     //zeigeTestMeldung(`${spiele} alle Spiele `, "blue");
     
-    //const geplant = spiele.filter(s => s.statuswort === "geplant");
-    const geplant = spiele.filter(s => new Date(s.anstoss) > new Date());
+//     //const geplant = spiele.filter(s => s.statuswort === "geplant");
+//     const geplant = spiele.filter(s => new Date(s.anstoss) > new Date());
 
-    //zeigeTestjson (spiele, "blue");
-    if (geplant.length === 0) {
-        tbody.innerHTML = `<tr><td>Keine geplanten Spiele</td></tr>`;
-        //zeigeTestMeldung(`${geplant.length} Spiele geplant`, "green");
-        return;
-    }
+//     //zeigeTestjson (spiele, "blue");
+//     if (geplant.length === 0) {
+//         tbody.innerHTML = `<tr><td>Keine geplanten Spiele</td></tr>`;
+//         //zeigeTestMeldung(`${geplant.length} Spiele geplant`, "green");
+//         return;
+//     }
 
-    //zeigeTestMeldung(`${geplant.length} Spiele geladen`, "green")
+//     //zeigeTestMeldung(`${geplant.length} Spiele geladen`, "green")
     
-const options = { 
-  weekday: 'long',   // "Samstag"
-  year: 'numeric',   // "2026"
-  month: '2-digit',  // "01"
-  day: '2-digit',    // "17"
-  hour: '2-digit',   // "18"
-  minute: '2-digit'  // "00"
-};
+// const options = { 
+//   weekday: 'long',   // "Samstag"
+//   year: 'numeric',   // "2026"
+//   month: '2-digit',  // "01"
+//   day: '2-digit',    // "17"
+//   hour: '2-digit',   // "18"
+//   minute: '2-digit'  // "00"
+// };
 
-    geplant.forEach(s => {
-        // Zeile 1: Datum + Status
-        const tr1 = document.createElement("tr");
+//     geplant.forEach(s => {
+//         // Zeile 1: Datum + Status
+//         const tr1 = document.createElement("tr");
 
- const textd = new Date(s.anstoss).toLocaleString("de-DE", options) + " Uhr";
-// console.log(textd); // Ausgabe z.B.: "Samstag, 17.01.2026, 18:00 Uhr"
+//  const textd = new Date(s.anstoss).toLocaleString("de-DE", options) + " Uhr";
+// // console.log(textd); // Ausgabe z.B.: "Samstag, 17.01.2026, 18:00 Uhr"
     
 
   
-         tr1.innerHTML = `
-            <td colspan="3">
-                       ${textd}
-                | Status: <b>${s.statuswort}</b>
-            </td>
-        `;
+//          tr1.innerHTML = `
+//             <td colspan="3">
+//                        ${textd}
+//                 | Status: <b>${s.statuswort}</b>
+//             </td>
+//         `;
 
-      // Zeile 2: Heimverein + Tipp
-        const tr2 = document.createElement("tr");
-        const logoh = s.heimverein + "_logo.png";
+//       // Zeile 2: Heimverein + Tipp
+//         const tr2 = document.createElement("tr");
+//         const logoh = s.heimverein + "_logo.png";
 
-// let heimLogoHtml;
-// if (s.heimbild) {
-//     heimLogoHtml = `<img src="${s.heimbild}" alt="${s.heimverein}" class="team-logo">`;
-// } else {
-//     heimLogoHtml = `<img src="/bilder/${logoh}" alt="${s.heimverein}" class="team-logo">`;
-// }
-heimLogoHtml = `<img src="${s.heimbild}" alt="${s.heimverein}" class="team-logo">`;
-// alert (heimLogoHtml);
 
-// heimLogoHtml2 = `<img src="${s.url}" alt="${s.heimverein}" class="team-logo">`;
-// alert (heimLogoHtml2);
+// heimLogoHtml = `<img src="${s.heimbild}" alt="${s.heimverein}" class="team-logo">`;
 
-        tr2.innerHTML = `
-            <td width="60%"><b>
 
-            ${heimLogoHtml}
-             ${s.heimverein}
-             </b>
-             </td>
+//         tr2.innerHTML = `
+//             <td width="60%"><b>
 
-            <td width="20%">Heim</td>
+//             ${heimLogoHtml}
+//              ${s.heimverein}
+//              </b>
+//              </td>
+
+//             <td width="20%">Heim</td>
 
 
 
-            <td width="20%">
+//             <td width="20%">
 
-                <input type="number"
-                       min="0"
-                       data-spiel="${s.id}"
-                       data-team="heim"
-                       class="tippInput">
-            </td>
-        `;
+//                 <input type="number"
+//                        min="0"
+//                        data-spiel="${s.id}"
+//                        data-team="heim"
+//                        class="tippInput">
+//             </td>
+//         `;
 
-        // Zeile 3: Gastverein + Tipp
-        const tr3 = document.createElement("tr");
-        const logog = s.gastverein + "_logo.png";
-// let gastLogoHtml;
-// if (s.gastbild) {
-    gastLogoHtml = `<img src="${s.gastbild}" alt="${s.gastverein}" class="team-logo">`;
-// } else {
-//     gastLogoHtml = `<img src="/bilder/${logog}" alt="${s.gastverein}" class="team-logo">`;
-// }
-        tr3.innerHTML = `
-            <td width="60%">
-            <b>
-                ${gastLogoHtml}
-                ${s.gastverein}
-            </b>
-             </td>
-            <td width="20%">Gast</td>
-            <td width="20%">
+//         // Zeile 3: Gastverein + Tipp
+//         const tr3 = document.createElement("tr");
+//         const logog = s.gastverein + "_logo.png";
+// // let gastLogoHtml;
+// // if (s.gastbild) {
+//     gastLogoHtml = `<img src="${s.gastbild}" alt="${s.gastverein}" class="team-logo">`;
+// // } else {
+// //     gastLogoHtml = `<img src="/bilder/${logog}" alt="${s.gastverein}" class="team-logo">`;
+// // }
+//         tr3.innerHTML = `
+//             <td width="60%">
+//             <b>
+//                 ${gastLogoHtml}
+//                 ${s.gastverein}
+//             </b>
+//              </td>
+//             <td width="20%">Gast</td>
+//             <td width="20%">
            
-                <input type="number"
-                       min="0"
-                       data-spiel="${s.id}"
-                       data-team="gast"
-                       class="tippInput">
-            </td>
-        `;
+//                 <input type="number"
+//                        min="0"
+//                        data-spiel="${s.id}"
+//                        data-team="gast"
+//                        class="tippInput">
+//             </td>
+//         `;
 
-        // optische Trennung
-        const trSpacer = document.createElement("tr");
-        trSpacer.innerHTML = `<td colspan="3">&nbsp;</td>`;
+//         // optische Trennung
+//         const trSpacer = document.createElement("tr");
+//         trSpacer.innerHTML = `<td colspan="3">&nbsp;</td>`;
 
-        tbody.append(tr1, tr2, tr3, trSpacer);
+//         tbody.append(tr1, tr2, tr3, trSpacer);
+//     });
+// }
+
+
+async function ladeSpieleMitTipps() {
+    const spiele = await api("/api/spiele");
+
+    const container = $("tipContainer"); // div statt tbody
+    container.innerHTML = "";
+
+    const geplant = spiele.filter(s => new Date(s.anstoss) > new Date());
+
+    if (geplant.length === 0) {
+        container.innerHTML = `<p>Keine geplanten Spiele</p>`;
+        return;
+    }
+
+    const options = { 
+        weekday: 'long',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+
+    // 🔹 Spiele nach Gruppen sortieren
+    const gruppen = {};
+
+    geplant.forEach(s => {
+        const [order, name] = s.spielgruppe.split("_");
+
+        if (!gruppen[name]) {
+            gruppen[name] = {
+                order: parseInt(order),
+                spiele: []
+            };
+        }
+
+        gruppen[name].spiele.push(s);
+    });
+
+    // 🔹 Gruppen sortieren
+    const sortierteGruppen = Object.entries(gruppen)
+        .sort((a, b) => a[1].order - b[1].order);
+
+    // 🔹 Tabellen erzeugen
+    sortierteGruppen.forEach(([gruppenName, gruppe]) => {
+
+        const h3 = document.createElement("h3");
+        h3.textContent = gruppenName;
+        container.appendChild(h3);
+
+        const table = document.createElement("table");
+        table.classList.add("tipTabelle");
+
+        const tbody = document.createElement("tbody");
+
+        gruppe.spiele.forEach(s => {
+
+            const textd = new Date(s.anstoss).toLocaleString("de-DE", options) + " Uhr";
+
+            const tr1 = document.createElement("tr");
+            tr1.innerHTML = `
+                <td colspan="3">
+                    ${textd} | Status: <b>${s.statuswort}</b>
+                </td>
+            `;
+
+            const tr2 = document.createElement("tr");
+
+            const heimLogoHtml =
+                `<img src="${s.heimbild}" alt="${s.heimverein}" class="team-logo">`;
+
+            tr2.innerHTML = `
+                <td width="60%">
+                    <b>${heimLogoHtml} ${s.heimverein}</b>
+                </td>
+                <td width="20%">Heim</td>
+                <td width="20%">
+                    <input type="number"
+                           min="0"
+                           value="${s.heimtipp ?? ""}"
+                           data-spiel="${s.id}"
+                           data-team="heim"
+                           class="tippInput">
+                </td>
+            `;
+
+            const tr3 = document.createElement("tr");
+
+            const gastLogoHtml =
+                `<img src="${s.gastbild}" alt="${s.gastverein}" class="team-logo">`;
+
+            tr3.innerHTML = `
+                <td width="60%">
+                    <b>${gastLogoHtml} ${s.gastverein}</b>
+                </td>
+                <td width="20%">Gast</td>
+                <td width="20%">
+                    <input type="number"
+                           min="0"
+                           value="${s.gasttipp ?? ""}"
+                           data-spiel="${s.id}"
+                           data-team="gast"
+                           class="tippInput">
+                </td>
+            `;
+
+            const trSpacer = document.createElement("tr");
+            trSpacer.innerHTML = `<td colspan="3">&nbsp;</td>`;
+
+            tbody.append(tr1, tr2, tr3, trSpacer);
+        });
+
+        table.appendChild(tbody);
+        container.appendChild(table);
     });
 }
+
+
+
+
+
+
+
+
+
 
 async function alleTippsSpeichern() {
     const inputs = document.querySelectorAll(".tippInput");
