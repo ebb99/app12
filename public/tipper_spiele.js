@@ -365,7 +365,7 @@ async function ladeTipps() {
     div.innerHTML = `
     <strong>${gruppe.spiel.heimverein} – ${gruppe.spiel.gastverein}</strong>
     <div class="status">
-        ${new Date(gruppe.spiel.anstoss).toLocaleString("de-DE")}
+        ${new Date(gruppe.spiel.anstoss).toLocaleString("de-DE",options)}
         | Status: <span class="${cssClass}">
             ${gruppe.spiel.statuswort}
            </span>
