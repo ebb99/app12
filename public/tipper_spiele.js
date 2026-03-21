@@ -179,8 +179,23 @@ async function ladeSpieleMitTipps() {
             ...options
             }) + " Uhr";
 
-            // console.log(textd)
-            // console.log(textd2)
+            const text3=date.toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    ...options
+  }) + " Uhr";
+
+
+
+
+
+
+            console.log(textd)
+            console.log(text3)
             
          
             const tr1 = document.createElement("tr");
