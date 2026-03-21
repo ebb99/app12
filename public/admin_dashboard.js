@@ -424,6 +424,9 @@ async function userAnlegen(e) {
     $("userForm").reset();
     ladeUser();
 }
+
+
+
 async function ladeRangliste() {
     const daten = await api("/api/rangliste");
 
