@@ -174,34 +174,24 @@ async function ladeSpieleMitTipps() {
             const textd = new Date(s.anstoss).toLocaleString("de-DE", options) + " Uhr";
             const date = new Date(s.anstoss.replace(" ", "T"));
 
-            const textd2 = date.toLocaleString("de-DE", {
-            timeZone: "Europe/Berlin",
-            ...options
-            }) + " Uhr";
+            const textd4 = date.toLocaleString("de-DE",options) + " Uhr";
+          
 
             const text3=date.toLocaleString("de-DE", {
-    timeZone: "Europe/Berlin",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    ...options
-  }) + " Uhr";
+            timeZone: "Europe/Berlin",
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            ...options
+        }) + " Uhr";
 
-
-
-
-
-
-            console.log(textd)
-            console.log(text3)
-            
          
             const tr1 = document.createElement("tr");
             tr1.innerHTML = `
                 <td colspan="3">
-                    ${text3} | Status: <b>${s.statuswort}</b>
+                    ${text4} | Status: <b>${s.statuswort}</b>
                 </td>
             `;
 
