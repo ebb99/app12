@@ -172,11 +172,21 @@ async function ladeSpieleMitTipps() {
         gruppe.spiele.forEach(s => {
 
             const textd = new Date(s.anstoss).toLocaleString("de-DE", options) + " Uhr";
+            const date = new Date(s.anstoss.replace(" ", "T"));
 
+            const textd2 = date.toLocaleString("de-DE", {
+            timeZone: "Europe/Berlin",
+            ...options
+            }) + " Uhr";
+
+            // console.log(textd)
+            // console.log(textd2)
+            
+         
             const tr1 = document.createElement("tr");
             tr1.innerHTML = `
                 <td colspan="3">
-                    ${textd} | Status: <b>${s.statuswort}</b>
+                    ${textd2} | Status: <b>${s.statuswort}</b>
                 </td>
             `;
 
