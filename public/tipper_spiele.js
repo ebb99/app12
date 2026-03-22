@@ -357,19 +357,30 @@ async function ladeTipps() {
     const div = document.createElement("div");
     div.className = "spiel";
 
-    
+        const options = { 
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
     
     gruppe.spiel.statuswort === "beendet" ? "status-beendet" : "status-offen";
     const statuswort = gruppe.spiel.statuswort;
     const cssClass = getStatusClass(statuswort);
+    const text1 = new Date(gruppe.spiel.anstoss).toLocaleString("de-DE",options)
+
+    console.log(text1)
     div.innerHTML = `
     <strong>${gruppe.spiel.heimverein} – ${gruppe.spiel.gastverein}</strong>
     <div class="status">
-        ${new Date(gruppe.spiel.anstoss).toLocaleString("de-DE",options)}
+
+
+        ${new Date(gruppe.spiel.anstoss).toLocaleString("de-DE")}
         | Status: <span class="${cssClass}">
             ${gruppe.spiel.statuswort}
            </span>
-        | Ergebnis: ${gruppe.spiel.heimtore ?? "-"} :
+        | Ergb.: ${gruppe.spiel.heimtore ?? "-"} :
         ${gruppe.spiel.gasttore ?? "-"}
 
 
