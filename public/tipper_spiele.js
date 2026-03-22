@@ -35,6 +35,31 @@ function getStatusClass(statuswort) {
     return mapping[statuswort] || "";  // falls etwas Unerwartetes kommt
 }
 
+function formatAnstoss(anstoss, options = {}) {
+  if (!anstoss) return "–";
+
+  // DB-Format → ISO-kompatibel machen
+  const date = new Date(anstoss.replace(" ", "T"));
+
+  // Fallback bei ungültigem Datum
+  if (isNaN(date)) {
+    console.warn("Ungültiges Datum:", anstoss);
+    return "Ungültiges Datum";
+  }
+
+  return date.toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    ...options
+  }) + " Uhr";
+}
+
+
+
 // ===============================
 // INIT
 // ===============================
@@ -369,18 +394,27 @@ async function ladeTipps() {
     const statuswort = gruppe.spiel.statuswort;
     const cssClass = getStatusClass(statuswort);
     const text1 = new Date(gruppe.spiel.anstoss).toLocaleString("de-DE",options)
-
     console.log(text1)
+
+    // ${new Date(gruppe.spiel.anstoss).toLocaleString("de-DE")}
+
     div.innerHTML = `
     <strong>${gruppe.spiel.heimverein} – ${gruppe.spiel.gastverein}</strong>
     <div class="status">
 
 
-        ${new Date(gruppe.spiel.anstoss).toLocaleString("de-DE")}
+        ${new Date(gruppe.spiel.anstoss.replace(" ", "T")).toLocaleString("de-DE", {
+    timeZone: "Europe/Berlin",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+})}
         | Status: <span class="${cssClass}">
             ${gruppe.spiel.statuswort}
            </span>
-        | Ergeb.: ${gruppe.spiel.heimtore ?? "-"} :
+        | Ergebnis: ${gruppe.spiel.heimtore ?? "-"} :
         ${gruppe.spiel.gasttore ?? "-"}
 
 
