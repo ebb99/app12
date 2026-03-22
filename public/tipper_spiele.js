@@ -414,7 +414,7 @@ async function ladeTipps() {
         | Status: <span class="${cssClass}">
             ${gruppe.spiel.statuswort}
            </span>
-        | Ergebnis: ${gruppe.spiel.heimtore ?? "-"} :
+        |  ${gruppe.spiel.heimtore ?? "-"} :
         ${gruppe.spiel.gasttore ?? "-"}
 
 
