@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Tipp</title>
+    <link rel="stylesheet" href="extra_tipp.css">
+    <script src="/auth.js"></script>
+    <script src="extra_tipp.js"></script>
+ </head>
+
+<body>
+
+    <h1>🏆 WM 2026 Extratipps</h1>
+    <p id="deadline-msg"></p>
+    <p id="error-message" class="error"></p>
+
+    <!-- Eigenen Tipp abgeben -->
+    <div class="form-section" id="tipp-form-container">
+        <h2>Mein Tipp</h2>
+        <form id="tipp-form">
+            <div class="form-group">
+                <label for="weltmeister">Weltmeister 2026:</label>
+                <input type="text" id="weltmeister" required placeholder="z.B. Deutschland">
+            </div>
+            <div class="form-group">
+                <label for="torschuetzenkoenig">Torschützenkönig:</label>
+                <input type="text" id="torschuetzenkoenig" required placeholder="z.B. Musiala">
+            </div>
+            <button type="submit" id="submit-btn">Tipp speichern</button>
+           </form>
+            <button type="submit" id="zurueck">zurück</button>
+    </div>
+
+    
+    <!-- Übersicht aller Tipps -->
+    <div class="list-section">
+        <h2>Alle Tipps der Teilnehmer</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Teilnehmer</th>
+                    <th>Weltmeister-Tipp</th>
+                    <th>Torschützenkönig-Tipp</th>
+                </tr>
+            </thead>
+            <tbody id="tipps-tabelle">
+                <!-- Dynamischer Inhalt via JS -->
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
