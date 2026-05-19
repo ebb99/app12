@@ -70,13 +70,22 @@ function requireAdmin(req, res, next) {
     }
     next();
 }
-
+// alt requiretipper
+// function requireTipper(req, res, next) {
+//     if (!req.session.user || req.session.user.role !== "tipper") {
+//         return res.status(403).json({ error: "Nur Tipper erlaubt" });
+//     }
+//     next();
+// }
 function requireTipper(req, res, next) {
-    if (!req.session.user || req.session.user.role !== "tipper") {
+    // Sicherer Schutz gegen "Cannot read properties of undefined"
+    if (!req.session?.user || req.session.user.role !== "tipper") {
         return res.status(403).json({ error: "Nur Tipper erlaubt" });
     }
     next();
 }
+
+
 
 // ===============================
 // Datenbank
@@ -85,11 +94,52 @@ const isRailway =
     process.env.DATABASE_URL &&
     !process.env.DATABASE_URL.includes("localhost");
 
-const pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: isRailway ? { rejectUnauthorized: false } : false
+// const pool = new pg.Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: isRailway ? { rejectUnauthorized: false } : false
 
-});
+// });
+
+// const pool = new pg.Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
+// });
+
+// const pool = new pg.Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: process.env.NODE_ENV === "production" 
+//         ? { rejectUnauthorized: false } 
+//         : false // Deaktiviert SSL für den lokalen Betrieb komplett
+// });
+
+// Ermittelt, ob die DATABASE_URL den Begriff "localhost" oder "127.0.0.1" enthält
+const isLocalhost = process.env.DATABASE_URL && (
+    process.env.DATABASE_URL.includes("localhost") || 
+    process.env.DATABASE_URL.includes("127.0.0.1")
+);
+
+let poolConfig = {
+    connectionString: process.env.DATABASE_URL
+};
+
+// Wenn es NICHT lokal ist und wir in Produktion sind (Railway) -> SSL aktivieren
+if (!isLocalhost && process.env.NODE_ENV === "production") {
+    poolConfig.ssl = { rejectUnauthorized: false };
+} else {
+    // Lokal: SSL zwingend abschalten
+    poolConfig.ssl = false;
+    
+    // Falls in Ihrer lokalen DATABASE_URL "?sslmode=require" steht, schneiden wir es hier ab
+    if (poolConfig.connectionString && poolConfig.connectionString.includes("?sslmode=")) {
+        poolConfig.connectionString = poolConfig.connectionString.split("?sslmode=")[0];
+    }
+}
+
+const pool = new pg.Pool(poolConfig);
+
+
+
+
 pool.on("connect", async (client) => {
   await client.query("SET TIME ZONE 'Europe/Berlin'");
 });
@@ -128,6 +178,17 @@ cron.schedule("* * * * *", async () => {
         console.error("Cron Fehler:", err);
     }
 });
+
+// Deadline festlegen: 10. Juni 2026 um 23:59:59 Uhr
+const WM_DEADLINE = new Date("2026-06-10T23:59:59");
+
+// Middleware zur serverseitigen Prüfung der Abgabefrist
+function checkWMDeadline(req, res, next) {
+    if (new Date() > WM_DEADLINE) {
+        return res.status(403).json({ error: "Die Abgabefrist am 10.06.2026 ist abgelaufen!" });
+    }
+    next();
+}
 
 
 // ===============================
@@ -173,6 +234,53 @@ app.post("/api/logout", (req, res) => {
 app.get("/api/session", (req, res) => {
     res.json({ user: req.session.user || null });
 });
+
+// 2. Alle Tipps abrufen (Erfordert Login, Sichtbarkeit für alle Teilnehmer)
+app.get("/api/extratip", requireLogin, async (req, res) => {
+    try {
+        const result = await pool.query(
+            "SELECT username, weltmeister, torschuetzenkoenig FROM extratip ORDER BY username ASC"
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error("Fehler beim Laden der Extratipps:", err);
+        res.status(500).json({ error: "Datenbankfehler beim Laden." });
+    }
+});
+
+// 3. Tipp abgeben oder aktualisieren (Erfordert die Rolle 'tipper' und Einhaltung der Deadline)
+app.post("/api/extratip", requireLogin, requireTipper, checkWMDeadline, async (req, res) => {
+    const { weltmeister, torschuetzenkoenig } = req.body;
+    const username = req.session.user.name; // Sicher aus der verifizierten Session
+
+    if (!weltmeister || !torschuetzenkoenig) {
+        return res.status(400).json({ error: "Alle Felder müssen ausgefüllt sein." });
+    }
+
+    try {
+        const queryText = `
+            INSERT INTO extratip (username, weltmeister, torschuetzenkoenig, updated_at)
+            VALUES ($1, $2, $3, NOW())
+            ON CONFLICT (username) 
+            DO UPDATE SET weltmeister = EXCLUDED.weltmeister, torschuetzenkoenig = EXCLUDED.torschuetzenkoenig, updated_at = NOW();
+        `;
+        
+        await pool.query(queryText, [username, weltmeister.trim(), torschuetzenkoenig.trim()]);
+        res.json({ success: true, message: "Tipp erfolgreich gespeichert." });
+    // } catch (err) {
+        // console.error("Fehler beim Speichern des Extratipps:", err);
+        // res.status(500).json({ error: "Datenbankfehler beim Speichern." });
+// Ändern Sie den catch-Block in Ihrer POST-Route temporär so ab:
+    }catch (err) {
+        console.error("Fehler beim Speichern:", err);
+        // Sendet die exakte Fehlermeldung der Datenbank an das Frontend zurück
+        res.status(500).json({ error: `Datenbankfehler: ${err.message}`, detail: err.detail });
+    
+
+
+    }
+});
+
 
 
 
@@ -379,7 +487,7 @@ app.get("/api/spiele", requireLogin, async (req, res) => {
             LEFT JOIN tips t
               ON t.spiel_id = s.id  
              AND t.user_id = $1
-            ORDER BY s.anstoss DESC
+            ORDER BY s.statuswort DESC
         `, [userId]);
 
         res.json(result.rows);
@@ -606,8 +714,9 @@ app.get("/api/tips", requireLogin, async (req, res) => {
             FROM tips t
             JOIN users u ON u.id = t.user_id
             JOIN spiele s ON s.id = t.spiel_id
-
+            WHERE s.statuswort != 'geplant'
             ORDER BY s.anstoss DESC, u.name ASC
+
             
         `);
 
