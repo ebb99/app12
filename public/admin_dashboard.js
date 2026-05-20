@@ -288,6 +288,12 @@ console.log({
     });
 
     alert(`Spiel angelegt:\n${heimName} vs ${gastName}`);
+    const heimInput = document.getElementById('heimInput');
+    const gastInput = document.getElementById('gastInput');
+    heimInput.value = "";
+    gastInput.value = "";
+
+
     ladeSpiele();
 }
 
