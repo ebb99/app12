@@ -487,7 +487,7 @@ app.get("/api/spiele", requireLogin, async (req, res) => {
             LEFT JOIN tips t
               ON t.spiel_id = s.id  
              AND t.user_id = $1
-            ORDER BY s.statuswort DESC
+            ORDER BY s.anstoss DESC
         `, [userId]);
 
         res.json(result.rows);
