@@ -720,6 +720,8 @@ app.get("/api/tips", requireLogin, async (req, res) => {
             
         `);
 
+    // WHERE s.statuswort != 'geplant'
+
         res.json(result.rows);
 
     } catch (err) {
